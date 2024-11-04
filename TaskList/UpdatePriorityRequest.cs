@@ -1,0 +1,1 @@
+public record UpdatePriorityRequest(bool priority);

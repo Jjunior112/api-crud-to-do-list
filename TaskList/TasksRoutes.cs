@@ -8,11 +8,11 @@ public static class TaskRoutes
 
         // Post 
 
-        taskRoutes.MapPost(pattern: "", handler: async (AddTaskRequest request, AppDbContext context) =>
+        taskRoutes.MapPost(pattern: "", handler: async (AddTaskRequest request, AppDbContext context, CancellationToken ct) =>
       {
               var newTask = new Task(request.Title);
-              await context.Tasks.AddAsync(newTask);
-              await context.SaveChangesAsync();
+              await context.Tasks.AddAsync(newTask,ct);
+              await context.SaveChangesAsync(ct);
 
               return Results.Ok(newTask);
           
@@ -20,14 +20,54 @@ public static class TaskRoutes
 
         // Get
 
-        taskRoutes.MapGet(pattern: "", handler: async (AppDbContext context) =>
+        taskRoutes.MapGet(pattern: "", handler: async (AppDbContext context,CancellationToken ct) =>
         {
 
-            var task = await context.Tasks.ToListAsync();
+            var task = await context.Tasks.ToListAsync(ct);
 
             return task;
 
         });
+
+        // Put Title
+
+        taskRoutes.MapPut(pattern:"/task/{id:guid}", handler: async (Guid id , AppDbContext context, UpdateTaskRequest request,CancellationToken ct) =>{
+            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id,ct);
+
+            if (task == null)
+                return Results.NotFound();
+
+            task.UpdateTask(request.Title);
+
+            await context.SaveChangesAsync(ct);
+
+            return Results.Ok(task);
+
+            
+
+        });
+
+        // Put Priority
+
+        taskRoutes.MapPut(pattern:"/priority/{id:guid}", handler: async (Guid id , AppDbContext context, UpdatePriorityRequest request,CancellationToken ct) =>{
+            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id,ct);
+
+            if (task == null)
+                return Results.NotFound();
+
+
+            if (task.Priority != request.priority)
+            task.UpdatePriority(!task.Priority);
+
+            await context.SaveChangesAsync(ct);
+
+            return Results.Ok(task);
+
+        });
+
+        //Delete
+
+
 
         
 

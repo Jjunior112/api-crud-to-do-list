@@ -10,4 +10,13 @@ public class Task
         Title = title;
         Priority = false;
     }
+
+    public void UpdateTask(string title){
+        Title = title;
+
+    }
+    public void UpdatePriority(bool priority){
+        Priority = priority;
+    }
+    
 }
