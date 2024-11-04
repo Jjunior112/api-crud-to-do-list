@@ -10,17 +10,17 @@ public static class TaskRoutes
 
         taskRoutes.MapPost(pattern: "", handler: async (AddTaskRequest request, AppDbContext context, CancellationToken ct) =>
       {
-              var newTask = new Task(request.Title);
-              await context.Tasks.AddAsync(newTask,ct);
-              await context.SaveChangesAsync(ct);
+          var newTask = new Task(request.Title);
+          await context.Tasks.AddAsync(newTask, ct);
+          await context.SaveChangesAsync(ct);
 
-              return Results.Ok(newTask);
-          
+          return Results.Ok(newTask);
+
       });
 
         // Get
 
-        taskRoutes.MapGet(pattern: "", handler: async (AppDbContext context,CancellationToken ct) =>
+        taskRoutes.MapGet(pattern: "", handler: async (AppDbContext context, CancellationToken ct) =>
         {
 
             var task = await context.Tasks.ToListAsync(ct);
@@ -31,8 +31,9 @@ public static class TaskRoutes
 
         // Put Title
 
-        taskRoutes.MapPut(pattern:"/task/{id:guid}", handler: async (Guid id , AppDbContext context, UpdateTaskRequest request,CancellationToken ct) =>{
-            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id,ct);
+        taskRoutes.MapPut(pattern: "/task/{id:guid}", handler: async (Guid id, AppDbContext context, UpdateTaskRequest request, CancellationToken ct) =>
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id, ct);
 
             if (task == null)
                 return Results.NotFound();
@@ -43,21 +44,22 @@ public static class TaskRoutes
 
             return Results.Ok(task);
 
-            
+
 
         });
 
         // Put Priority
 
-        taskRoutes.MapPut(pattern:"/priority/{id:guid}", handler: async (Guid id , AppDbContext context, UpdatePriorityRequest request,CancellationToken ct) =>{
-            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id,ct);
+        taskRoutes.MapPut(pattern: "/priority/{id:guid}", handler: async (Guid id, AppDbContext context, UpdatePriorityRequest request, CancellationToken ct) =>
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id, ct);
 
             if (task == null)
                 return Results.NotFound();
 
 
             if (task.Priority != request.priority)
-            task.UpdatePriority(!task.Priority);
+                task.UpdatePriority(!task.Priority);
 
             await context.SaveChangesAsync(ct);
 
@@ -67,9 +69,27 @@ public static class TaskRoutes
 
         //Delete
 
+        taskRoutes.MapDelete(pattern: "{id:guid}", handler: async (Guid id, AppDbContext context, CancellationToken ct) =>
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id, ct);
+
+            if (task == null)
+
+                return Results.NotFound();
+
+            context.Tasks.Remove(task);
+
+            await context.SaveChangesAsync(ct);
+
+            return Results.NoContent();
+
+        });
 
 
-        
+
+
+
+
 
     }
 
