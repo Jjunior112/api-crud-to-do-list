@@ -33,11 +33,16 @@ Banco de Dados (SQLite)
         }
 
 2. Visualizar Tarefas
-  - **Rota: GET /tasks/**
-  
-  - Descrição: Retorna todas as tarefas.
 
-3. Alterar prioridade Tarefa
+   2.1 **Rota: GET /tasks/**
+    
+      - Descrição: Retorna todas as tarefas.
+  
+    2.2 **Rota: GET /tasks/{id}**
+  
+      - Descrição: Retorna uma tarefa específica.
+
+4. Alterar prioridade Tarefa
 
   - **Rota: PUT /tasks/priority/{id}**
   
