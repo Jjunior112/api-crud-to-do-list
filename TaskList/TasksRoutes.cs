@@ -29,6 +29,17 @@ public static class TaskRoutes
 
         });
 
+        // Get para task específica
+
+        taskRoutes.MapGet(pattern: "{id:guid}", handler:async (Guid id, AppDbContext context, CancellationToken ct)=>{
+            var task = await context.Tasks.SingleOrDefaultAsync(task => task.id == id,ct);
+
+            if (task == null)
+            return Results.NotFound();
+            await context.SaveChangesAsync(ct);
+            return Results.Ok(task);
+        });
+
         // Put Title
 
         taskRoutes.MapPut(pattern: "/task/{id:guid}", handler: async (Guid id, AppDbContext context, UpdateTaskRequest request, CancellationToken ct) =>
@@ -69,7 +80,7 @@ public static class TaskRoutes
 
         // Put Complete task
 
-        taskRoutes.MapPut(pattern:"{id:guid}", handler: async (Guid id, AppDbContext context, UpdateCompletedRequest request, CancellationToken ct)=>{
+        taskRoutes.MapPut(pattern:"completed/{id:guid}", handler: async (Guid id, AppDbContext context, UpdateCompletedRequest request, CancellationToken ct)=>{
             var task = await context.Tasks.FirstOrDefaultAsync(task => task.id == id);
             if (task == null)
                 return Results.NotFound();
@@ -79,7 +90,7 @@ public static class TaskRoutes
                 task.UpdateTaskCompleted(!task.Iscompleted);
                 
             await context.SaveChangesAsync(ct);
-            
+
             return Results.Ok(task);
         });
 
