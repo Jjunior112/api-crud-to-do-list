@@ -22,15 +22,15 @@ Banco de Dados (SQLite)
 
 1. Criar Tarefa
  
-  - **Rota: POST /tasks**
-
-  - Descrição: Cria uma nova tarefa.
+    - **Rota: POST /tasks**
   
-  - Exemplo de Corpo da Requisição:
+    - Descrição: Cria uma nova tarefa.
+    
+    - Exemplo de Corpo da Requisição:
   
-        {
-          "Title": "Estudar Entity Framework",
-        }
+          {
+            "Title": "Estudar Entity Framework",
+          }
 
 2. Visualizar Tarefas
 
@@ -44,32 +44,32 @@ Banco de Dados (SQLite)
 
 4. Alterar prioridade Tarefa
 
-  - **Rota: PUT /tasks/priority/{id}**
+    - **Rota: PUT /tasks/priority/{id}**
+    
+    - Descrição: Atualiza a prioridade de uma tarefa.
+    
+    - Exemplo de Corpo da Requisição:
   
-  - Descrição: Atualiza a prioridade de uma tarefa.
-  
-  - Exemplo de Corpo da Requisição:
-
-        {
-          "priority": true
-        }
+          {
+            "priority": true
+          }
 
 4. Alterar completeude da Tarefa
-  - **Rota: PUT tasks/completed/{id}**
+    - **Rota: PUT tasks/completed/{id}**
+    
+    - Descrição: muda o status de completude da tarefa.
+    
+    - Exemplo de Corpo da Requisição:
   
-  - Descrição: muda o status de completude da tarefa.
-  
-  - Exemplo de Corpo da Requisição:
-
-        {
-          "IsCompleted": true
-        }
+          {
+            "IsCompleted": true
+          }
 
 6. Deletar Tarefa
    
-  - **Rota: DELETE /tasks/{id}**
-  
-  - Descrição: Exclui uma tarefa específica pelo ID.
+    - **Rota: DELETE /tasks/{id}**
+    
+    - Descrição: Exclui uma tarefa específica pelo ID.
 
 ## Contribuição
 Contribuições são bem-vindas! Por favor, envie um Pull Request com melhorias ou correções.
