@@ -67,6 +67,22 @@ public static class TaskRoutes
 
         });
 
+        // Put Complete task
+
+        taskRoutes.MapPut(pattern:"{id:guid}", handler: async (Guid id, AppDbContext context, UpdateCompletedRequest request, CancellationToken ct)=>{
+            var task = await context.Tasks.FirstOrDefaultAsync(task => task.id == id);
+            if (task == null)
+                return Results.NotFound();
+            
+            if (task.Iscompleted != request.Iscompleted)
+
+                task.UpdateTaskCompleted(!task.Iscompleted);
+                
+            await context.SaveChangesAsync(ct);
+            
+            return Results.Ok(task);
+        });
+
         //Delete
 
         taskRoutes.MapDelete(pattern: "{id:guid}", handler: async (Guid id, AppDbContext context, CancellationToken ct) =>
